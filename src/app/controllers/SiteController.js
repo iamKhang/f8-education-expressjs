@@ -1,14 +1,25 @@
-class SiteController{
+const Course = require("../models/Course");
 
-    // [GET] /
-    home(req, res) {
-        res.render('home')
-    }
+class SiteController {
+  // [GET] /
+  // async home(req, res) {
+  //   const courses = await Course.find({});
+  //   res.json(courses);
+  //   // res.render('home')
+  // }
 
-    // [Get] /search
-    search(req, res){
-        res.render('search')
-    }
+   home(req, res, next) {
+    Course.find({})
+    .then(courses => res.render('home',{
+      title: 'TEST TITLE'
+    }))
+    .catch(next)
+  }
+
+  // [Get] /search
+  search(req, res) {
+    res.render("search");
+  }
 }
 
-module.exports = new SiteController;
+module.exports = new SiteController();
