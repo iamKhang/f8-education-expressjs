@@ -13,14 +13,20 @@
     <tbody>
       {{#each courses}}
         <tr>
-            {{!-- viết phương thức trong file index.js --}}
+          {{! viết phương thức trong file index.js }}
           <th scope="row">{{sum @index 1}}</th>
           <td>{{this.name}}</td>
           <td>{{this.level}}</td>
           <td>{{this.createdAt}}</td>
           <td>
             <a href="/courses/{{this._id}}/edit" class="btn btn-link">Sửa</a>
-            <a href="" class="btn btn-link">Xóa</a>
+            <a
+              href=""
+              class="btn btn-link"
+              data-toggle="modal"
+              data-target="#confirm-delete"
+              data-id="{{this._id}}"
+            >Xóa</a>
           </td>
         </tr>
       {{/each}}
@@ -28,3 +34,59 @@
     </tbody>
   </table>
 </div>
+{{!-- /courses/{{this._id}}/delete --}}
+{{! Xac  nhan  xoa }}
+<div id="confirm-delete" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xác nhận xóa khóa học</h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Thông tin khóa học sẽ bị xóa vĩnh viễn và không thể khôi phục. Bạn có
+          chắc chắn muốn xóa?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          id="delete-course"
+          type="button"
+          class="btn btn-primary btn-danger"
+        >Xác nhận</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+        >Hủy</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<form method="post" name="deleteForm"></form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(event) {
+    var courseId;
+    var btnDeleteCourse = document.getElementById('delete-course');
+    var deleteCourse = document.forms['deleteForm'];
+
+    $('#confirm-delete').on('show.bs.modal', function(event) {
+      var button = $(event.relatedTarget);
+      courseId = button.data('id');
+    });
+
+    btnDeleteCourse.onclick = function() {
+      deleteCourse.action = '/courses/' + courseId + '?_method=delete';
+      deleteCourse.submit();
+    };
+  });
+</script>
+
