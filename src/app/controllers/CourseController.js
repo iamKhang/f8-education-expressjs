@@ -50,7 +50,19 @@ class CourseController {
   }
 
   delete(req, res, next){
-    Course.deleteOne({_id: req.params.id}, req.body)
+    Course.delete({_id: req.params.id}, req.body)
+    .then(()=> res.redirect('back'))
+    .catch(next)
+  }
+
+  forceDelete(req, res, next){
+    Course.deleteOne({_id: req.params.id})
+    .then(()=> res.redirect('back'))
+    .catch(next)
+  }
+
+  restore(req, res, next){
+    Course.restore({_id: req.params.id})
     .then(()=> res.redirect('back'))
     .catch(next)
   }

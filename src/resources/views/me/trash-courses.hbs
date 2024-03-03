@@ -1,6 +1,6 @@
 <div class="mt-4">
-  <h3> Khóa học của tôi</h3>
-  <a href="/me/trash/courses">Thùng rác</a>
+  <a href="/me/stored/courses" class="btn btn-link">Danh sách khóa học</a>
+  <h3> Khóa học đã xóa</h3>
 
   <table class="table mt-4">
     <thead>
@@ -13,6 +13,7 @@
     </thead>
     <tbody>
       {{#each courses}}
+      {{#if deleted}}
         <tr>
           {{! viết phương thức trong file index.js }}
           <th scope="row">{{sum @index 1}}</th>
@@ -20,7 +21,7 @@
           <td>{{this.level}}</td>
           <td>{{this.createdAt}}</td>
           <td>
-            <a href="/courses/{{this._id}}/edit" class="btn btn-link">Sửa</a>
+            <a href="" class="btn btn-link btn-restore" data-id="{{this._id}}">Khôi phục</a>
             <a
               href=""
               class="btn btn-link"
@@ -30,13 +31,10 @@
             >Xóa</a>
           </td>
         </tr>
-      {{else}}
+      {{/if}}
+    {{else}}
         <tr>
-          <td colspan="5" class="text-center">Bạn chưa đăng ký khóa học nào
-
-          <a href="/courses/create" class="">Thêm khóa học</a>
-
-          </td>
+          <td colspan="5" class="text-center">Bạn chưa xóa khóa học nào</td>
         </tr>
       {{/each}}
 
@@ -80,6 +78,7 @@
 </div>
 
 <form method="post" name="deleteForm"></form>
+<form method="post" name="restoreForm"></form>
 
 <script>
     document.addEventListener('DOMContentLoaded', function(event) {
@@ -87,6 +86,11 @@
         var btnDeleteCourse = document.getElementById('delete-course');
         var
             deleteCourse = document.forms['deleteForm'];
+        var restoreBtn = $('.btn-restore')
+        var restoreForm = document.forms['restoreForm'];
+
+
+
         $('#confirm-delete').on('show.bs.modal', function(event) {
             var button =
                 $(event.relatedTarget);
@@ -94,8 +98,18 @@
         });
         btnDeleteCourse.onclick = function() {
             deleteCourse.action = '/courses/' +
-                courseId + '?_method=delete';
+                courseId + '/force?_method=delete';
             deleteCourse.submit();
         };
-    }); <
+
+
+        restoreBtn.click(function(event) {
+            event.preventDefault();
+            var courseId = $(this).data('id');
+            restoreForm.action = '/courses/' + courseId + '/restore?_method=patch';
+            restoreForm.submit();
+        });
+    });
+
+
 </script>
