@@ -30,6 +30,7 @@
     "mongoose": "^8.2.0",
     "mongoose-delete": "^1.0.2",
     "mongoose-slug-updater": "^3.3.0",
+    "mongoose-softdelete": "^1.2.0",
     "sass": "^1.71.0"
   },
   "devDependencies": {
