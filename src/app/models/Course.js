@@ -9,7 +9,7 @@ const Schema = mongoose.Schema;
 const Course = new Schema(
   {
     name: { type: String, require: true },
-    description: { type: String, maxLength: 255 },
+    description: { type: String, maxLength: 1000 },
     image: { type: String, maxLength: 255 },
     videoId: { type: String, maxLength: 255 },
     level: { type: String, maxLength: 255 },
