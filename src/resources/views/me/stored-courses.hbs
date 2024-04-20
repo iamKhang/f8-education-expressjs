@@ -19,7 +19,7 @@
       <option value="delete">Xóa</option>
     </select>
 
-    <button class="btn btn-primary btn-sm disabled btn-checkAll-submit">Áp dụng</button>
+    <button class="btn btn-primary btn-sm btn-checkAll-submit" disabled="disabled">Áp dụng</button>
   </div>
 
   <table class="table mt-4">
@@ -119,8 +119,10 @@
     var checkboxAll = $('#checkbox-all'); 
     var couseItemCheckbox = $('input[name="courseIds[]"]');
     var btnCheckAllSubmit = $('.btn-checkAll-submit');
-    var containerForm = document.forms['container-form'];
+    //var containerForm = document.forms['container-form'];
+    var containerForm = $('form[name="container-form"]');
 
+    console.log(containerForm);
     
 
   $('#confirm-delete').on('show.bs.modal', function(event) { var button =
@@ -130,29 +132,21 @@
   btnDeleteCourse.onclick = function() { deleteCourse.action = '/courses/' + courseId + '?_method=delete'; deleteCourse.submit()}; 
   
 
-  {{!-- Checkbox all clicked --}}
+  //Checkbox all clicked
   checkboxAll.change(function(){
     var isCheckedAll = $(this).prop('checked');
     couseItemCheckbox.prop('checked', isCheckedAll);
-  })
-
-  {{!-- Course Item checkbox change --}}
-  couseItemCheckbox.change(function(){
-    var isCheckedAll = couseItemCheckbox.length === couseItemCheckbox.filter(':checked').length;
-    checkboxAll.prop('checked', isCheckedAll);
-
-    console.log('checked');
     renderExecuteButton();
   })
 
-  btnCheckAllSubmit.on('submit', function(event){
-    event.preventDefault();
-   var isSubmitable = !$(this).hasClass('disabled');
-    if(!isSubmitable){
-      event.preventDefault();
-    }
+  //Course Item checkbox change
+  couseItemCheckbox.change(function(){
+    var isCheckedAll = couseItemCheckbox.length === couseItemCheckbox.filter(':checked').length;
+    checkboxAll.prop('checked', isCheckedAll);
+    renderExecuteButton();
   })
 
+  
 
 
 
@@ -161,9 +155,11 @@
   function renderExecuteButton() {
     var checkedCount = couseItemCheckbox.filter(':checked').length;
     if(checkedCount>0){
-      btnCheckAllSubmit.removeClass('disabled');
+      //btnCheckAllSubmit.removeClass('disabled');
+      btnCheckAllSubmit.removeAttr('disabled');
     }else{
-      btnCheckAllSubmit.addClass('disabled');
+      //btnCheckAllSubmit.addClass('disabled');
+      btnCheckAllSubmit.attr('disabled', 'disabled');
     }}
   });
 </script>
