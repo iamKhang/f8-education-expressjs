@@ -4,7 +4,17 @@ const { multipaleMongooseToObject } = require("../../utils/mongoose");
 class MeController {
   storedCourses(req, res, next) {
 
-    Promise.all([Course.find({}), Course.countDocumentsWithDeleted({ deleted: true })])
+    let courseQuery = Course.find({});
+
+    
+
+    if(req.query.hasOwnProperty('_sort')) {
+      courseQuery = courseQuery.sort({
+        [req.query.column]: req.query.type
+      })
+    }
+
+    Promise.all([courseQuery, Course.countDocumentsWithDeleted({ deleted: true })])
       .then(([courses, deleteCount]) =>
         res.render("me/stored-courses", {
           deleteCount,
@@ -30,9 +40,18 @@ class MeController {
   }
 
   trashCourses(req, res, next) {
-    Course.findDeleted({})
-      .then((courses) =>
+    let courseQuery = Course.findDeleted({});
+  
+    if(req.query.hasOwnProperty('_sort')) {
+      courseQuery = courseQuery.sort({
+        [req.query.column]: req.query.type
+      });
+    }
+  
+    Promise.all([courseQuery, Course.countDocumentsWithDeleted({ deleted: true })])
+      .then(([courses, deleteCount]) =>
         res.render("me/trash-courses", {
+          deleteCount,
           courses: multipaleMongooseToObject(courses),
         })
       )

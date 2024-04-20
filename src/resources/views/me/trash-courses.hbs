@@ -26,9 +26,17 @@
     <thead>
       <tr>
         <th scope="col" colspan="2">#</th>
-        <th scope="col">Tên khóa học</th>
-        <th scope="col">Trình độ</th>
-        <th scope="col" colspan="2">Thời gian xóa</th>
+        <th scope="col">Tên khóa học
+          {{{sortable 'name' _sort}}}
+        </th>
+        <th scope="col">
+          Trình độ
+          {{{sortable 'level' _sort}}}
+        </th>
+        <th scope="col" colspan="2">
+          Thời gian xóa
+          {{{sortable 'deletedAt' _sort}}}
+        </th>
       </tr>
     </thead>
     <tbody>
@@ -165,18 +173,10 @@
             if(!isSubmitable){
                  event.preventDefault();
             }
-          }
-  })
-
-
-
-
-
+          })
         function renderExecuteButton() {
             var isSubmitable = couseItemCheckbox.filter(':checked').length > 0;
             $('.btn-checkAll-submit').toggleClass('disabled', !isSubmitable);
         }
     });
-
-
 </script>
